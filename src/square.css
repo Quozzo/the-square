@@ -1,0 +1,54 @@
+.example-enter {
+    opacity: 0.01;
+  }
+  
+  .example-enter.example-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+  }
+  
+  .example-leave {
+    opacity: 1;
+  }
+  
+  .example-leave.example-leave-active {
+    opacity: 0.01;
+    transition: opacity 300ms ease-in;
+  }
+
+  #thesquare {
+      margin: 0 auto;
+      width: 500px;
+      height: 500px;
+  }
+
+  .square {
+      /* width: 500px;*/
+      height: 100%; 
+  }
+
+  .border-r {
+      border: 1px solid red;
+      padding: 20px;
+      height: 458px;
+  }
+
+  .border-g {
+      border: 1px solid green;
+      padding: 20px;
+      height: 458px;
+  }
+
+  .border-b {
+      border: 1px solid blue;
+      padding: 20px;
+      height: 458px;
+  }
+
+  .red {
+      background-color: red;
+  }
+
+  .blue {
+      background-color: blue;
+  }
