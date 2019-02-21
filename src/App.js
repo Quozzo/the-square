@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import './square.css'
 import Swatch from './modes/Swatch'
+import MemoryBlock from './modes/MemoryBlock'
 
 class App extends Component {
 	render() {
@@ -8,7 +9,7 @@ class App extends Component {
 			<div className='App'>
 				<header className='App-header'>
 					<div id="thesquare">
-						<Swatch />
+						<MemoryBlock />
 					</div>
 				</header>
 			</div>

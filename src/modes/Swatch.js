@@ -18,7 +18,8 @@ class Swatch extends React.Component {
         e.preventDefault()
         const {count, swatches, game} = this.state
         const correct = (swatches[count] === 0 && e.type === "contextmenu")
-        || (swatches[count] === 1 && e.type === "click")
+            || (swatches[count] === 1 && e.type === "click")
+            
         if(correct){
             this.setState({
                 count: count+1
