@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { throws } from 'assert';
 
 export default class MemoryBlock extends Component {
     constructor(){
@@ -9,9 +8,13 @@ export default class MemoryBlock extends Component {
             phase: "intro",
             num: 10, //Total number of squares
             size: 10, //Size of the grid in X and Y
-            remove: 1, //Number of squares to remove
+            remove: 2, //Number of squares to remove
+            good: 0,
+            bad: 0,
+            squares: null
         }
-        this.removed = this.state.remove
+        this.good = 0
+        this.bad = this.state.remove
     }
 
     rand = max => {
@@ -34,39 +37,54 @@ export default class MemoryBlock extends Component {
             let rem = remove.indexOf(i) > -1
             if(!sqr[y]) sqr[y] = []
             if(!sqr[y][x]){
-                sqr[y][x] = {marked: true, remove: rem}
+                sqr[y][x] = {remove: rem}
                 i--
             }
         }
-        this.squares = sqr
-        console.log(remove, sqr)
-        this.setState({phase: "start"})
+        this.setState({phase: "start", squares: sqr})
     }
 
-    onClick = r => {        
+    guess = (r, x, y) => {        
         if(!this.started) return
-        const {phase} = this.state 
+        let {phase, good, squares, bad, remove} = this.state 
         if(phase === "success" || phase === "fail"){
             this.reset()
             return
         }
         if(!r) {
+            bad++
+            if(!squares[x]) squares[x] = []
+            if(!squares[x][y]) squares[x][y] = {}
+            squares[x][y].fail = true
             this.setState({
-                phase: "fail"
+                squares,
+                bad
             })
+            if(bad >= remove){
+                this.setState({
+                    phase: "fail"
+                })
+            }
             this.resetTimer = setTimeout(()=>{
                 this.reset()
             }, 5000)
             return
+        }else{
+            good++
+            squares[x][y].success = true
+            this.setState({
+                    good,
+                    squares
+            })
+            if(good >= remove){
+                this.setState({
+                    phase: "success"
+                })
+            }
+            this.resetTimer = setTimeout(()=>{
+                this.reset()
+            }, 5000)
         }
-        this.removed = this.removed - 1
-        if(this.removed) return
-        this.setState({
-            phase: "success"
-        })
-        this.resetTimer = setTimeout(()=>{
-            this.reset()
-        }, 5000)
     }
 
     init = () => {
@@ -74,16 +92,19 @@ export default class MemoryBlock extends Component {
     }
 
     reset = () => {
-        clearInterval(this.resetTimer)
+        clearTimeout(this.resetTimer)
         this.started = false
-        this.removed = this.state.remove
         this.setState({
-            phase: "intro"
+            phase: "intro",
+            squares: null,
+            bad: 0,
+            good: 0,
+            removed: 0
         })
     }
 
     render() {
-        const {phase, num, size, remove} = this.state
+        const {phase, num, size, remove, squares} = this.state
         if(phase === "intro"){
             return (
                 <div className="square border-b" onClick={this.start}>
@@ -99,12 +120,12 @@ export default class MemoryBlock extends Component {
                             return (
                                 <tr key={`row-${i}`}>
                                     {Array(size).fill().map((v, j)=>{
-                                        const isSquare = this.squares[i] && this.squares[i][j]
-                                        const square = isSquare ? this.squares[i][j] : undefined
+                                        const isSquare = squares[i] && squares[i][j]
+                                        const square = isSquare ? squares[i][j] : undefined
                                         const removeIt = isSquare && square.remove
                                         return (
-                                            <td key={`cell-${i}-${j}`} onClick={()=>this.onClick(removeIt)}>
-                                                {isSquare?<Square remove={removeIt} phase={phase} init={this.init} />:""}
+                                            <td key={`cell-${i}-${j}`} onClick={()=>this.guess(removeIt, i, j)}>
+                                                {square?<Square info={square} phase={phase} init={this.init} />:""}
                                             </td>
                                         )
                                     })}
@@ -119,7 +140,7 @@ export default class MemoryBlock extends Component {
 }
 
 class Square extends React.Component {
-    constructor(){
+    constructor(props){
         super()
         this.state = {
             shown: "shown"
@@ -127,14 +148,14 @@ class Square extends React.Component {
     }
 
     componentDidMount = () => {
-        const {phase, remove, init} = this.props
-        if(phase === "start"){
-            setTimeout(()=>{
+        const {info: {remove, fail, success}, phase, init} = this.props
+        if((!success || !fail) && phase === "start"){
+            this.timer = setTimeout(()=>{
                 this.setState({
                     shown: "hidden",
                 })
 
-                if(!remove){
+                if(!remove && (!success || !fail)){
                     setTimeout(()=>{
                         this.setState({
                             shown: "shown"
@@ -147,14 +168,20 @@ class Square extends React.Component {
         }
     }
 
+    componentWillUnmount(){
+        clearTimeout(this.timer)
+    }
+
     classes = () => {
-        const {phase, remove} = this.props
-        const {shown} = this.state
-        let classes = phase === "fail" && remove ? ["red"] 
-            : phase === "success" && remove ? ["green"] : ["blue"]
-        if(remove && phase === "start") classes.push("remove")
-        if(shown === "shown" || phase !== "start") classes.push("shown")
-        else if(shown === "hidden") classes.push("hidden")
+        const {info: {remove, success, fail}, phase} = this.props
+        const classes = []        
+
+        if(fail) classes.push("red")
+        else if(success) classes.push("green")
+        else if(phase === "fail" && remove) classes.push("green")
+        else if(this.state.shown === "shown") classes.push("blue")
+        else classes.push("hidden")
+
         return classes.join(" ")
     }
 
