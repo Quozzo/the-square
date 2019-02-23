@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from 'react'
-import { CSSTransitionGroup } from 'react-transition-group'
+import React from 'react'
 
 class Swatch extends React.Component {
 
@@ -16,7 +15,7 @@ class Swatch extends React.Component {
 
     onClick = e => {
         e.preventDefault()
-        const {count, swatches, game} = this.state
+        const {count, swatches} = this.state
         const correct = (swatches[count] === 0 && e.type === "contextmenu")
             || (swatches[count] === 1 && e.type === "click")
             
