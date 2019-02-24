@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import './square.css'
-import Swatch from './modes/Swatch'
-import MemoryBlock from './modes/MemoryBlock'
-import Mole from './modes/Mole'
-import Perimeter from './modes/Perimeter'
+import Manager from './Manager'
 
 class App extends Component {
 	render() {
@@ -11,7 +8,7 @@ class App extends Component {
 			<div className='App'>
 				<header className='App-header'>
 					<div id="thesquare">
-						<Perimeter />
+						<Manager />
 					</div>
 				</header>
 			</div>
