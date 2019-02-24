@@ -14,13 +14,7 @@ export default class Perimeter extends Component {
 
     startGame = () => {
         const {phase, coord: [x, y]} = this.state
-        if(this.state.phase === "prep"){
-            this.setState({
-                phase: "start",
-                coord: [5, 0]
-            })
-            this.position(true)
-        }else if(this.state.phase === "start"){
+        if(this.state.phase === "start"){
             if(x === 5 && y === 0){
                 this.setState({
                     phase: "success"
@@ -52,7 +46,6 @@ export default class Perimeter extends Component {
     }
 
     border = (cellX, cellY) => {
-        const {phase} = this.state
         if(!(cellX === 0 || cellX === 10 || cellY === 0 || cellY === 10)){
             return {border: 0}
         }else if(cellX === 5 && cellY === 0){
