@@ -103,6 +103,10 @@ export default class MemoryBlock extends Component {
         })
     }
 
+    componentWillUnmount(){
+        clearTimeout(this.resetTimer)
+    }
+
     render() {
         const {phase, num, size, remove, squares} = this.state
         if(phase === "intro"){
@@ -156,7 +160,7 @@ class Square extends React.Component {
                 })
 
                 if(!remove && (!success || !fail)){
-                    setTimeout(()=>{
+                    this.timeout = setTimeout(()=>{
                         this.setState({
                             shown: "shown"
                         })
@@ -170,6 +174,7 @@ class Square extends React.Component {
 
     componentWillUnmount(){
         clearTimeout(this.timer)
+        clearTimeout(this.timeout)
     }
 
     classes = () => {
