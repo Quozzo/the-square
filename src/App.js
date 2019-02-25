@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './square.css'
+import './index.css'
 import Manager from './Manager'
 
 class App extends Component {
