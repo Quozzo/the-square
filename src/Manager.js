@@ -30,7 +30,7 @@ class Menu extends Component {
     render() {
         const loc = window.location.host
         return (
-            <div className="square">
+            <div className="square main-menu">
                 <table>
                     <tbody>
                         <tr><td><Link to={`/Swatch`}>Swatch</Link></td><td><Link to="/MemoryBlock">Memory Block</Link></td></tr>
