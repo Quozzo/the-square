@@ -8,7 +8,7 @@ export default class MemoryBlock extends Component {
             phase: "intro",
             num: 10, //Total number of squares
             size: 10, //Size of the grid in X and Y
-            remove: 1, //Number of squares to remove
+            remove: 2, //Number of squares to remove
             good: 0,
             bad: 0,
             squares: null
@@ -64,11 +64,11 @@ export default class MemoryBlock extends Component {
                 this.setState({
                     phase: "fail"
                 })
-            }
-            this.resetTimer = setTimeout(()=>{
-                this.reset()
-            }, 5000)
-            return
+                this.resetTimer = setTimeout(()=>{
+                    this.reset()
+                }, 5000)
+                return
+            }            
         }else{
             good++
             squares[x][y].success = true
@@ -80,10 +80,10 @@ export default class MemoryBlock extends Component {
                 this.setState({
                     phase: "success"
                 })
-            }
-            this.resetTimer = setTimeout(()=>{
-                this.reset()
-            }, 5000)
+                this.resetTimer = setTimeout(()=>{
+                    this.reset()
+                }, 5000)
+            }            
         }
     }
 
