@@ -8,7 +8,7 @@ export default class MemoryBlock extends Component {
             phase: "intro",
             num: 10, //Total number of squares
             size: 10, //Size of the grid in X and Y
-            remove: 2, //Number of squares to remove
+            remove: 1, //Number of squares to remove
             good: 0,
             bad: 0,
             squares: null

@@ -8,18 +8,19 @@ import Perimeter from './modes/Perimeter'
 
 export default class Manager extends Component {
     render() {
-        
+        let loc = window.location
+        console.log(loc.origin+loc.pathname)
         return (
-            <Router basename={window.location.host}>
+            <Router>
                 <>
-                <Switch>
-                    <Route exact path="/" component={Menu} />
-                    <Route path="/swatch" component={Swatch} />
-                    <Route path="/MemoryBlock" component={MemoryBlock} />
-                    <Route path="/Mole" component={Mole} />
-                    <Route path="/Perimeter" component={Perimeter} />
-                    <Route component={FourOhFour} />
-                </Switch>
+                    <Switch>
+                        <Route exact path="/" component={Menu} />
+                        <Route path="/MemoryBlock" component={MemoryBlock} />
+                        <Route path="/Mole" component={Mole} />
+                        <Route path="/Perimeter" component={Perimeter} />    
+                        <Route path="/Swatch" component={Swatch} />                                   
+                        <Route component={FourOhFour} />
+                    </Switch>
                 </>
             </Router>
         )
@@ -33,8 +34,8 @@ class Menu extends Component {
             <div className="square main-menu">
                 <table>
                     <tbody>
-                        <tr><td><Link to={`/Swatch`}>Swatch</Link></td><td><Link to="/MemoryBlock">Memory Block</Link></td></tr>
-                        <tr><td><Link to="/Mole">Mole</Link></td><td><Link to="/Perimeter">Perimeter</Link></td></tr>
+                        <tr><td><Link to={`./Swatch`}>Swatch</Link></td><td><Link to="./MemoryBlock">Memory Block</Link></td></tr>
+                        <tr><td><Link to="./Mole">Mole</Link></td><td><Link to="./Perimeter">Perimeter</Link></td></tr>
                     </tbody>
                 </table>
             </div>

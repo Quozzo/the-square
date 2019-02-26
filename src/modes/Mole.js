@@ -68,7 +68,7 @@ export default class Mole extends Component {
     render() {
         const {size, phase, x, y, good, squares, timeLimit} = this.state
         if(phase === "intro"){
-            return <div className="square border-b" onClick={this.start}><h3>Mole</h3>You need to click on each square within the given time. The timer restarts every every "Mole" clicked on.<br/><br/>Click to begin</div>
+            return <div className="square border-b" onClick={this.start}><h3>Mole</h3>You need to click on each square within the given time. The timer restarts every time each "Mole" clicked on.<br/><br/>Click to begin</div>
         }else if(phase === "start"){
             return (
                 <div className="square">

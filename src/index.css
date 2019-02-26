@@ -33,23 +33,28 @@ body, html, #root, .App, .App-Header {
 .border-r {
 	border: 1px solid red;
 	padding: 20px;
-	height: 458px;
+    height: 458px;
+    width: 458px;
 }
 
 .border-g {
 	border: 1px solid green;
 	padding: 20px;
-	height: 458px;
+    height: 458px;
+    width: 458px;
 }
 
 .border-b {
 	border: 1px solid blue;
 	padding: 20px;
-	height: 458px;
+    height: 458px;
+    width: 458px;
 }
 
 .red {
-	background-color: red;
+    background-color: red;
+    border: 0;
+    margin: 0;
 	height: 100%;
 	width: 100%;
 }
