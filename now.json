@@ -1,6 +1,7 @@
 {
     "version": 2,
     "name": "The-Square",
+    "alias": "the-square",
     "builds": [
       {
         "src": "package.json",
