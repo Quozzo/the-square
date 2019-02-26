@@ -25,7 +25,7 @@ export default class Manager extends Component {
 class Menu extends Component {
     render() {
         return (
-            <div className="square">
+            <div className="square main-menu">
                 <table>
                     <tbody>
                         <tr><td><Link to="/swatch">Swatch</Link></td><td><Link to="/MemoryBlock">Memory Block</Link></td></tr>

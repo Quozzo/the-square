@@ -21,6 +21,15 @@ body, html, #root, .App, .App-Header {
 	
 }
 
+.main-menu a {
+	height: 100%;
+	text-decoration: none;
+	display: block;
+	display: flex;
+	align-items: center;
+  	justify-content: center;
+}
+
 .border-r {
 	border: 1px solid red;
 	padding: 20px;
