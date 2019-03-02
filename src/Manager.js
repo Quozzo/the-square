@@ -4,7 +4,7 @@ import Swatch from './modes/Swatch'
 import MemoryBlock from './modes/MemoryBlock'
 import Mole from './modes/Mole'
 import Perimeter from './modes/Perimeter'
-import Repitition from './modes/Repitition'
+import Repetition from './modes/Repetition'
 
 
 export default class Manager extends Component {
@@ -20,7 +20,7 @@ export default class Manager extends Component {
                         <Route path="/Mole" component={Mole} />
                         <Route path="/Perimeter" component={Perimeter} />    
                         <Route path="/Swatch" component={Swatch} />    
-                        <Route path="/Repitition" component={Repitition} />                                
+                        <Route path="/Repetition" component={Repetition} />                                
                         <Route component={FourOhFour} />
                     </Switch>
                 </>
