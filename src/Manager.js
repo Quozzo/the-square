@@ -5,6 +5,7 @@ import MemoryBlock from './modes/MemoryBlock'
 import Mole from './modes/Mole'
 import Perimeter from './modes/Perimeter'
 import Repetition from './modes/Repetition'
+import Pathfinder from './modes/Pathfinder'
 
 
 export default class Manager extends Component {
@@ -20,7 +21,8 @@ export default class Manager extends Component {
                         <Route path="/Mole" component={Mole} />
                         <Route path="/Perimeter" component={Perimeter} />    
                         <Route path="/Swatch" component={Swatch} />    
-                        <Route path="/Repetition" component={Repetition} />                                
+                        <Route path="/Repetition" component={Repetition} />
+                        <Route path="/Pathfinder" component={Pathfinder} />                    
                         <Route component={FourOhFour} />
                     </Switch>
                 </>
