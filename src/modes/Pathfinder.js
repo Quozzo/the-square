@@ -17,19 +17,21 @@ export default class Pathfinder extends Component {
     corners = () => {
         const { size } = this.state
         const coords = []
-        const path = [[0,0]]
+        const flow = {"start": "start", "up": "down", "down": "up", "left": "right", "right": "left"}
 
-        let directions = []
-        let direction = true
-        let hundred = 100
+        let limit = size * size
+        let target
+        let steps = 1
+        let coordX = 0
+        let coordY = 0
 
         coords[0] = []
-        coords[0][0] = 1
+        coords[0][0] = {step: 1, move: "start"}
 
-        while(hundred--){
-            directions = []
-            let coordX = path[path.length-1][0]
-            let coordY = path[path.length-1][1]
+        let prev = coords[0][0]
+
+        while(limit--){
+            let directions = []
 
             const up = coordY-1 >= 0 && !(coords[coordX] && coords[coordX][coordY-1])
             if(up) directions.push("up")
@@ -40,35 +42,45 @@ export default class Pathfinder extends Component {
             const right = coordX+1 <= size-1 && !(coords[coordX+1] && coords[coordX+1][coordY])
             if(right) directions.push("right")
 
-            if(!directions.length) break
+            if(!directions.length){
+                prev.path = `${prev.move}-end`
+                prev.move = `end`               
+                break
+            }
 
             let dir = directions[this.rand(directions.length)]
 
             if(dir === "up"){
-                path.push([coordX, coordY-1])
+                coordY = coordY-1
                 if(!coords[coordX]) coords[coordX] = []
-                coords[coordX][coordY-1] = path.length
+                coords[coordX][coordY] = {step: ++steps, move: dir}
+                target = coords[coordX][coordY]                
             }else if(dir === "down"){
-                path.push([coordX, coordY+1])
+                coordY = coordY+1
                 if(!coords[coordX]) coords[coordX] = []
-                coords[coordX][coordY+1] = path.length
+                coords[coordX][coordY] = {step: ++steps, move: dir}
+                target = coords[coordX][coordY]                
             }else if(dir === "left"){
-                path.push([coordX-1, coordY])
-                if(!coords[coordX-1]) coords[coordX-1] = []
-                coords[coordX-1][coordY] = path.length
+                coordX = coordX-1
+                if(!coords[coordX]) coords[coordX] = []
+                coords[coordX][coordY] = {step: ++steps, move: dir}
+                target = coords[coordX][coordY]                
             }else if(dir === "right"){
-                path.push([coordX+1, coordY])
-                if(!coords[coordX+1]) coords[coordX+1] = []
-                coords[coordX+1][coordY] = path.length
+                coordX = coordX+1
+                if(!coords[coordX]) coords[coordX] = []
+                coords[coordX][coordY] = {step: ++steps, move: dir}
+                target = coords[coordX][coordY]                
             }
+
+            prev.path = `${flow[prev.move]}-${dir}`
+            prev = target
         }
 
         this.setState({
-            coords,
-            path
+            coords
         })
 
-        console.log(path, coords)
+        console.log(coords)
     }
 
     start = () => {
@@ -94,7 +106,7 @@ export default class Pathfinder extends Component {
                             <tr key={`row-${cellY}`}>
                                 {Array(size).fill().map((v, cellX) => (
                                     <td key={`cell=${cellX}-${cellY}`} onClick={()=>this.guess(cellX, cellY)}>
-                                        {coords[cellX] && coords[cellX][cellY] && <Square x={cellX} y={cellY} number={coords[cellX][cellY]} />}
+                                        {coords[cellX] && coords[cellX][cellY] && <Square info={coords[cellX][cellY]} />}
                                     </td>
                                 )) }
                             </tr>
@@ -107,11 +119,23 @@ export default class Pathfinder extends Component {
 }
 
 class Square extends Component {
+    constructor(){
+        super()
+    }
+
+    classes = () => {
+        const { info } = this.props
+        let c = ["blue"]
+        c.push(info.move)
+        c.push(info.path)
+        return c.join(" ")
+    }
+
     render() {
-        const { x, y, number } = this.props
+        const { info } = this.props
         return (
-            <div className='blue' style={{color: "white", fontSize: "48px", display: "flex", justifyContent: "center", alignContent: "center"}}>
-                {number}
+            <div className={this.classes()} style={{color: "white", fontSize: "48px", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                {info.step}
             </div>
         )
     }

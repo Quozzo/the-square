@@ -97,6 +97,40 @@ table td {
     width: 9%;
 }
 
+.left-down, .down-left {
+    border-radius: 0 100px 0 0;
+}
+
+.left-up, .up-left {
+    border-radius: 0 0 100px 0;
+}
+
+.up-right, .right-up {
+    border-radius: 0 0 0 100px;
+}
+
+.right-down, .down-right {
+    border-radius: 100px 0 0 0;
+}
+
+.right-end, .start-left {
+    border-radius: 0 100px 100px 0;
+}
+
+.up-end, .start-down {
+    border-radius: 100px 100px 0 0;
+}
+
+.left-end, .start-right {
+    border-radius: 100px 0 0 100px;
+}
+
+.down-end, .start-up {
+    border-radius: 0 0 100px 100px;
+}
+
+
+
 /*
 .table {
 	display: flex;
