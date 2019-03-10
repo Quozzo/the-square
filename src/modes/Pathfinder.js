@@ -5,6 +5,7 @@ export default class Pathfinder extends Component {
         super()
         this.state = {
             phase: "intro",
+            step: 1,
             size: 5,
             coords: [],
         }
@@ -86,27 +87,51 @@ export default class Pathfinder extends Component {
     start = () => {
         this.corners()
         this.setState({
-            phase: "start"
+            phase: "start",
+            step: 1
         })
     }
 
-    guess = (x, y) => {
-        console.log(x, y)
+    outro = () => {
+        clearInterval(this.timer)
+        this.setState({
+            phase: "intro"
+        })
+    }
+    
+    guess = (x, y, guessStep) => {
+        const { step, coords, phase } = this.state
+        if(phase === "success") return this.outro()
+        if(step+1 === guessStep){
+            if(coords[x][y].move === "end"){
+                this.setState({
+                    phase: "success",
+                    step: step+1
+                })
+                this.timer = setTimeout(() => {
+                    this.outro()
+                }, 5000)                
+            }else{
+                this.setState({
+                    step: step+1
+                })
+            }
+        }
     }
     
     render() {
-        const { phase, coords, path, size } = this.state
+        const { phase, coords, path, size, step } = this.state
         if(phase === "intro") {
             return <div className='square border-b' onClick={this.start}><h3>Pathfinder</h3>A path through the square will be shown briefly before it disappears. You must navigate through the square using the same path. Start at the edge and work your way through to the other side by clicking on the squares and creating your path.</div>
-        }else if(phase === "start"){
+        }else if(phase === "start" || phase === "success"){
             return (
                 <div className="square">
                     <table><tbody>
                         {Array(size).fill().map((v, cellY) => (
                             <tr key={`row-${cellY}`}>
                                 {Array(size).fill().map((v, cellX) => (
-                                    <td key={`cell=${cellX}-${cellY}`} onClick={()=>this.guess(cellX, cellY)}>
-                                        {coords[cellX] && coords[cellX][cellY] && <Square info={coords[cellX][cellY]} />}
+                                    <td key={`cell=${cellX}-${cellY}`} onClick={()=>this.guess(cellX, cellY, coords[cellX] && coords[cellX][cellY] ? coords[cellX][cellY].step : !1)}>
+                                        {coords[cellX] && coords[cellX][cellY] && <Square phase={phase} info={coords[cellX][cellY]} step={step} />}
                                     </td>
                                 )) }
                             </tr>
@@ -114,6 +139,9 @@ export default class Pathfinder extends Component {
                     </tbody></table>
                 </div>
             )
+        }else if(phase === "outro"){
+            let classes = ["square"]
+            return <div className={classes}></div>
         }
     }
 }
@@ -121,22 +149,54 @@ export default class Pathfinder extends Component {
 class Square extends Component {
     constructor(){
         super()
+        this.state = {
+            display: "show"
+        }
+    }
+
+    componentDidMount(){
+        const { phase, step, info } = this.props
+        if(phase === "start" && step < info.step){
+            this.timer = setTimeout(() => {
+                this.setState({
+                    display: "hidden"
+                })
+            }, 5000)        
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        const { info, step } = this.props
+        if(step >= info.step && prevState.display === "hidden") {
+            this.setState({
+                display: "show"
+            })
+        }
     }
 
     classes = () => {
-        const { info } = this.props
-        let c = ["blue"]
-        c.push(info.move)
-        c.push(info.path)
+        const { info, phase, step } = this.props
+        const { display } = this.state
+        let c = []
+        if(step === 1 || step > info.step || info.move === "end") c.push(info.path)
+        if(display === "hidden") c.push("hidden")
+        if(phase === "start") c.push("blue")
+        if(phase === "fail" && info.step === step) c.push("green")
+        if(phase === "success") c.push("green")
+        
         return c.join(" ")
     }
 
     render() {
-        const { info } = this.props
         return (
-            <div className={this.classes()} style={{color: "white", fontSize: "48px", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                {info.step}
+            <div className={this.classes()} style={styles.square}>
             </div>
         )
+    }
+}
+
+const styles = {
+    square: {
+        color: "white", fontSize: "48px", display: "flex", justifyContent: "center", alignItems: "center"
     }
 }
