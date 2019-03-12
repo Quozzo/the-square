@@ -98,10 +98,24 @@ export default class Pathfinder extends Component {
             phase: "intro"
         })
     }
+
+    fail = () => {
+        this.setState({
+            phase: "fail"
+        })
+        this.timer = setTimeout(() => {
+            this.outro()
+        }, 7000) 
+    }
+    
     
     guess = (x, y, guessStep) => {
         const { step, coords, phase } = this.state
-        if(phase === "success") return this.outro()
+        if(phase === "success" || phase === "fail") return this.outro()
+        if(!guessStep){
+            this.fail()
+        }
+        if(guessStep < step+1) return
         if(step+1 === guessStep){
             if(coords[x][y].move === "end"){
                 this.setState({
@@ -116,6 +130,8 @@ export default class Pathfinder extends Component {
                     step: step+1
                 })
             }
+        }else{
+            this.fail()
         }
     }
     
@@ -123,9 +139,9 @@ export default class Pathfinder extends Component {
         const { phase, coords, path, size, step } = this.state
         if(phase === "intro") {
             return <div className='square border-b' onClick={this.start}><h3>Pathfinder</h3>A path through the square will be shown briefly before it disappears. You must navigate through the square using the same path. Start at the edge and work your way through to the other side by clicking on the squares and creating your path.</div>
-        }else if(phase === "start" || phase === "success"){
+        }else if(phase === "start" || phase === "success" || phase === "fail"){
             return (
-                <div className="square">
+                <div id='pathfinder' className="square">
                     <table><tbody>
                         {Array(size).fill().map((v, cellY) => (
                             <tr key={`row-${cellY}`}>
@@ -139,9 +155,6 @@ export default class Pathfinder extends Component {
                     </tbody></table>
                 </div>
             )
-        }else if(phase === "outro"){
-            let classes = ["square"]
-            return <div className={classes}></div>
         }
     }
 }
@@ -156,7 +169,7 @@ class Square extends Component {
 
     componentDidMount(){
         const { phase, step, info } = this.props
-        if(phase === "start" && step < info.step){
+        if(phase === "start"){
             this.timer = setTimeout(() => {
                 this.setState({
                     display: "hidden"
@@ -178,10 +191,12 @@ class Square extends Component {
         const { info, phase, step } = this.props
         const { display } = this.state
         let c = []
-        if(step === 1 || step > info.step || info.move === "end") c.push(info.path)
-        if(display === "hidden") c.push("hidden")
+        if((step === 1 || step > info.step || info.move === "end") && display !== "hidden") c.push(info.path, "transition")
+        if(phase === "fail") c.push(info.path)
+        if(display === "hidden" && phase === "start" && info.step !== 1) c.push("hidden")
         if(phase === "start") c.push("blue")
-        if(phase === "fail" && info.step === step) c.push("green")
+        if(phase === "fail" && step < info.step) c.push("red")
+        else if(phase === "fail" && step >= info.step) c.push("green")
         if(phase === "success") c.push("green")
         
         return c.join(" ")
