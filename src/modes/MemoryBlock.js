@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Table from '../Tables'
 
 export default class MemoryBlock extends Component {
     constructor(){
@@ -119,7 +120,18 @@ export default class MemoryBlock extends Component {
         }else if(phase === "start" || phase === "fail" || phase === "success"){
             return (
                 <div className="square">
-                    <table><tbody>
+                    {/* Missing parameter on this.guess which is needed for each td??? */}
+                    <Table rows={size} cols={size} onClick={(i, j)=>this.guess(i, j)}
+                        render={(i, j)=>{
+                            const isSquare = squares[i] && squares[i][j]
+                            const square = isSquare ? squares[i][j] : undefined
+                            const removeIt = isSquare && square.remove
+                            return square?<Square info={square} phase={phase} init={this.init} />:""
+                        }}
+                    />
+
+
+                    {/* <table><tbody>
                         {Array(size).fill().map((v, i)=>{
                             return (
                                 <tr key={`row-${i}`}>
@@ -136,7 +148,7 @@ export default class MemoryBlock extends Component {
                                 </tr>
                             )
                         })}
-                    </tbody></table>
+                    </tbody></table> */}
                 </div>
             )
         }
