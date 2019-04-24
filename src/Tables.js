@@ -10,8 +10,8 @@ export default class Table extends Component {
                             <tr key={`tr-${row}`} {...this.props.trProps}>
                                 {Array(parseInt(this.props.cols)).fill().map((v, col)=>{
                                     return (
-                                        <td key={`td-${row}-${col}`} onClick={()=>this.props.onClick(row, col)}>
-                                            {this.props.render(row, col)}
+                                        <td key={`td-${row}-${col}`} onClick={()=>this.props.onClick(col, row)}>
+                                            {this.props.render(col, row)}
                                         </td>
                                     )
                                 })}
@@ -30,11 +30,11 @@ export class TableTest extends Component {
             <Table
                 rows='10'
                 cols='10'
-                render={(r, c) => {
-                    return r + ' ' + c
+                render={(c, r) => {
+                    return c + ' ' + r
                 }}
-                onClick={(r, c)=>{
-                    alert(r+" "+c)
+                onClick={(c, r)=>{
+                    alert(c+" "+r)
                 }}
             />
 		)

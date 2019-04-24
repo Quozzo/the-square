@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { RSA_NO_PADDING } from 'constants';
+import Table from '../Tables'
 
 export default class Repetition extends Component {
     constructor(){
@@ -47,6 +47,7 @@ export default class Repetition extends Component {
     }
 
     guess = (x, y) => {
+        console.log(x, y)
         const {sequence, phase} = this.state
         let {step, steps} = this.state
         if(phase === "ai") return
@@ -96,19 +97,14 @@ export default class Repetition extends Component {
         }else if(phase === "start" || phase === "ai" || phase === "fail"){
             return (
                 <div className="square">
-                    <table><tbody>
-                        {Array(5).fill().map((v, cellY) => (
-                            <tr key={`row-${cellY}`}>
-                                {Array(5).fill().map((v, cellX) => (
-                                    <td key={`cell=${cellX}-${cellY}`} onClick={()=>this.guess(cellX, cellY)}>
-                                        {phase === "ai" && cellX === sequence[step][0] && cellY === sequence[step][1] && <Square phase={phase} nextStep={this.nextStep} />}
-                                        {phase === "fail" && sequence[step][0] === cellX && sequence[step][1] === cellY && <Square phase={phase} outro={this.outro}/> }
-                                        {phase === "start" && sequence[step-1] && sequence[step-1][0] === cellX && sequence[step-1][1] === cellY && <Square phase={phase} nextStep={this.nextStep} /> }
-                                    </td>
-                                )) }
-                            </tr>
-                        )) }
-                    </tbody></table>
+                    <Table rows="5" cols="5" onClick={(cellX, cellY)=>this.guess(cellX, cellY)}
+                        render={(cellX, cellY)=>{
+                            {return (phase === "ai" && cellX === sequence[step][0] && cellY === sequence[step][1] && <Square phase={phase} nextStep={this.nextStep} />) ||
+                                (phase === "fail" && sequence[step][0] === cellX && sequence[step][1] === cellY && <Square phase={phase} outro={this.outro}/>) ||
+                                (phase === "start" && sequence[step-1] && sequence[step-1][0] === cellX && sequence[step-1][1] === cellY && <Square phase={phase} nextStep={this.nextStep} />)
+                            }
+                        }}
+                    />
                 </div>
             )
         }
@@ -123,8 +119,8 @@ class Square extends Component {
         }
     }
 
-    componentDidMount(){
-    const {phase, nextStep, hidden, outro} = this.props         
+    update(){
+        const {phase, nextStep, hidden, outro} = this.props         
         if(phase === "ai"){
             this.timer = setTimeout(() => {
                 nextStep()
@@ -140,6 +136,15 @@ class Square extends Component {
                 })
             }, 1000);            
         }
+    }
+
+    componentDidMount(){
+        this.update()
+    }
+
+    componentDidUpdate(){
+        clearTimeout(this.timer)
+        this.update()
     }
 
     componentWillUnmount(){
