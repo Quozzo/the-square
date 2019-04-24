@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Table from '../Tables'
 
 export default class Pathfinder extends Component {
     constructor(){
@@ -142,17 +143,12 @@ export default class Pathfinder extends Component {
         }else if(phase === "start" || phase === "success" || phase === "fail"){
             return (
                 <div id='pathfinder' className="square">
-                    <table><tbody>
-                        {Array(size).fill().map((v, cellY) => (
-                            <tr key={`row-${cellY}`}>
-                                {Array(size).fill().map((v, cellX) => (
-                                    <td key={`cell=${cellX}-${cellY}`} onClick={()=>this.guess(cellX, cellY, coords[cellX] && coords[cellX][cellY] ? coords[cellX][cellY].step : !1)}>
-                                        {coords[cellX] && coords[cellX][cellY] && <Square phase={phase} info={coords[cellX][cellY]} step={step} />}
-                                    </td>
-                                )) }
-                            </tr>
-                        )) }
-                    </tbody></table>
+                    <Table rows={size} cols={size}
+                        render={(cellX, cellY)=>{
+                            return coords[cellX] && coords[cellX][cellY] && <Square phase={phase} info={coords[cellX][cellY]} step={step} />
+                        }}
+                        onClick={(cellX, cellY)=>this.guess(cellX, cellY, coords[cellX] && coords[cellX][cellY] ? coords[cellX][cellY].step : !1)}
+                    />
                 </div>
             )
         }

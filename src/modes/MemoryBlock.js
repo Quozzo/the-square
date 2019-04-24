@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Table from '../Tables'
 
 export default class MemoryBlock extends Component {
     constructor(){
@@ -44,14 +45,19 @@ export default class MemoryBlock extends Component {
         this.setState({phase: "start", squares: sqr})
     }
 
-    guess = (r, x, y) => {        
+    guess = (x, y) => {        
         if(!this.started) return
         let {phase, good, squares, bad, remove} = this.state 
         if(phase === "success" || phase === "fail"){
             this.reset()
             return
         }
-        if(!r) {
+
+        const isSquare = squares[x] && squares[x][y]
+        const square = isSquare ? squares[x][y] : undefined
+        const removeIt = isSquare && square.remove
+
+        if(!removeIt) {
             bad++
             if(!squares[x]) squares[x] = []
             if(!squares[x][y]) squares[x][y] = {}
@@ -119,24 +125,13 @@ export default class MemoryBlock extends Component {
         }else if(phase === "start" || phase === "fail" || phase === "success"){
             return (
                 <div className="square">
-                    <table><tbody>
-                        {Array(size).fill().map((v, i)=>{
-                            return (
-                                <tr key={`row-${i}`}>
-                                    {Array(size).fill().map((v, j)=>{
-                                        const isSquare = squares[i] && squares[i][j]
-                                        const square = isSquare ? squares[i][j] : undefined
-                                        const removeIt = isSquare && square.remove
-                                        return (
-                                            <td key={`cell-${i}-${j}`} onClick={()=>this.guess(removeIt, i, j)}>
-                                                {square?<Square info={square} phase={phase} init={this.init} />:""}
-                                            </td>
-                                        )
-                                    })}
-                                </tr>
-                            )
-                        })}
-                    </tbody></table>
+                    <Table rows={size} cols={size} onClick={(i, j)=>this.guess(i, j)}
+                        render={(i, j)=>{
+                            const isSquare = squares[i] && squares[i][j]
+                            const square = isSquare ? squares[i][j] : undefined
+                            return square?<Square info={square} phase={phase} init={this.init} />:""
+                        }}
+                    />
                 </div>
             )
         }

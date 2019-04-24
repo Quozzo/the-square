@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Table from '../Tables'
 
 export default class Mole extends Component {
     constructor(){
@@ -72,21 +73,11 @@ export default class Mole extends Component {
         }else if(phase === "start"){
             return (
                 <div className="square">
-                    <table><tbody>
-                        {Array(size).fill().map((v, cellY) => {
-                            return (
-                                <tr key={`row-${cellY}`}>
-                                    {Array(size).fill().map((v, cellX) => (
-                                        <td key={`cell-${cellY}-${cellX}`} onClick={()=>this.clicked(cellX, cellY)}>
-                                            {
-                                                cellX === x && cellY === y && <Square fail={this.fail} timeLimit={timeLimit}/>
-                                            }
-                                        </td>
-                                    ))}
-                                </tr>
-                            )
-                        })}
-                    </tbody></table>
+                    <Table rows={size} cols={size} onClick={(row, col)=>{this.clicked(col, row)}}
+                        render={(cellY, cellX)=>{
+                            return cellX === x && cellY === y && <Square fail={this.fail} timeLimit={timeLimit}/>
+                        }}
+                    />
                 </div>
             )
         }else if(phase === "success"){

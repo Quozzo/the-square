@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { listenerCount } from 'events';
+import Table from '../Tables'
 
 export default class Perimeter extends Component {
     constructor(){
@@ -62,6 +63,12 @@ export default class Perimeter extends Component {
         }else if(phase === "start" || phase === "prep" || phase === "stop" || phase === "fail" || phase === "success") {
             return (
                 <div className="square" id="perimeter">
+                    {/* <Table rows="11" cols="11" onClick={this.startGame} 
+                        render={(cellX, cellY)=>{
+                            return cellX === x && cellY === y && <Square position={this.position} phase={phase}/>
+                        }}
+                    /> */}
+
                     <table className='table'><tbody>
                         {Array(11).fill().map((v, cellY)=>{
                             return (
