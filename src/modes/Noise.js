@@ -57,16 +57,23 @@ export default class Noise extends Component {
         const { coords } = this.state
         return {
             position: "relative",
-            top: coords[0],
-            left: coords[1],
+            left: coords[0],
+            top: coords[1],
             width: "30px",
             height: "30px"
         }
     }
 
     guess = e => {
-        const { coords } = this.state
+        const { coords, phase } = this.state
 
+        if(phase === "success" || phase === "fail"){
+            this.setState({
+                phase: "intro",
+                squares: 0
+            })
+            return
+        }
 
         let left = e.pageX
         let top = e.pageY
@@ -103,7 +110,7 @@ export default class Noise extends Component {
             return (
                 <div className="square border-b" onClick={this.start}>
                     <h3>Noise</h3>
-                    <p>A square will appear in several locations before disappearing at one location which will not reappear. Remember its last position because multiple other squares will distract you from its location. Try to click on the last position of the square, if you can.</p>
+                    <p>A square will appear in several locations before disappearing for good. Remember its last position because multiple other squares will distract you from its location. Try to click on the last position of the square, if you can.</p>
                 </div>
             )
         }else if(phase === "prep"){
@@ -115,7 +122,7 @@ export default class Noise extends Component {
         }else if(phase === "start" || phase === "fail" || phase === "success"){
             return (
                 <div className="square" style={{padding: "0", border: "1px solid blue"}} onMouseMove={this.mouseMove} onClick={this.guess} ref={this.container}>
-                    {phase === "success" || phase === "fail" && <div className="blue" style={this.position()} />}
+                    {(phase === "success" || phase === "fail") && <div className="blue" style={this.position()} />}
                     <div className={this.classes()} style={{position: "absolute", width: "20px", height: "20px"}} ref={this.div}/>
                 </div>
             )
@@ -139,26 +146,27 @@ class Square extends Component {
         super()
     }
 
-    componentDidMount(){
-        const { nextSquare } = this.props
-        setTimeout(() => {
-            nextSquare()
-        }, 2000)        
-    }
-
-    componentDidUpdate(){
+    update(){
         const { nextSquare } = this.props
         setTimeout(() => {
             nextSquare()
         }, 2000)  
     }
 
+    componentDidMount(){
+        this.update()      
+    }
+
+    componentDidUpdate(){
+        this.update()
+    }
+
     position = () => {
         const { coords } = this.props
         return {
             position: "relative",
-            top: coords[0],
-            left: coords[1],
+            left: coords[0],
+            top: coords[1],
             width: "30px",
             height: "30px"
         }
