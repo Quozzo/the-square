@@ -11,6 +11,7 @@ class Swatch extends React.Component {
             swatches: [],
             game: "intro"
         }
+        console.log("swatch")
     }
 
     onClick = e => {
@@ -77,7 +78,7 @@ class Swatch extends React.Component {
     render(){
         const {game} = this.state
         if(game === "start"){
-            return <div className="square"><div className={this.classes()} onClick={this.onClick} onContextMenu={this.onClick}></div></div>
+            return <div className={this.classes()} onClick={this.onClick} onContextMenu={this.onClick}></div>
         }else if(game === "intro"){
             return <div className={this.classes()} onClick={this.start}><h3>Swatch</h3>Different coloured swatches will appear in the square, you must press the correct mouse button when the coloured swatch appears. Right is for Red and Left is for Blue. You must complete it within {this.timeLimit/1000} seconds.<br/><br/>Click the Square to begin.</div>
         }else if(game === "success"){

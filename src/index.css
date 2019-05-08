@@ -1,13 +1,13 @@
 body, html, #root, .App, .App-Header {
 	height: 100%;
 	width: 100%;
-	margin: 9;
+	margin: 0;
 	padding: 0;
 }
 
 #thesquare {
 	margin: 0 auto;
-	width: 100%;
+   width: 100%;
 	height: 100%;
 	display: flex;
 	align-items: center;
@@ -16,9 +16,9 @@ body, html, #root, .App, .App-Header {
 
 .square {
 	/* width: 500px;*/
-	height: 500px;
-	width: 500px;
-	
+   height: 500px;
+   padding-top: 100%;
+	width: 500px;	
 }
 
 .main-menu a {
