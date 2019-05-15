@@ -7,6 +7,7 @@ import Perimeter from './modes/Perimeter'
 import Repetition from './modes/Repetition'
 import Pathfinder from './modes/Pathfinder'
 import Columnative from './modes/Columnative'
+import Noise from './modes/Noise'
 
 
 export default class Manager extends Component {
@@ -25,6 +26,7 @@ export default class Manager extends Component {
                         <Route path="/Repetition" component={Repetition} />
                         <Route path="/Pathfinder" component={Pathfinder} />
                         <Route path="/Columnative" component={Columnative} />                 
+                        <Route path="/Noise" component={Noise} />                  
                         <Route component={FourOhFour} />
                     </Switch>
                 </>
