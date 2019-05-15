@@ -42,8 +42,9 @@ class Menu extends Component {
             <div className="square main-menu">
                 <table>
                     <tbody>
-                        <tr><td><Link to={`./Swatch`}>Swatch</Link></td><td><Link to="./MemoryBlock">Memory Block</Link></td></tr>
-                        <tr><td><Link to="./Mole">Mole</Link></td><td><Link to="./Perimeter">Perimeter</Link></td></tr>
+                        <tr><td><Link to={`./Swatch`}>Swatch</Link></td><td><Link to="./MemoryBlock">Memory Block</Link></td><td><Link to="./Mole">Mole</Link></td></tr>
+                        <tr><td><Link to="./Perimeter">Perimeter</Link></td><td><Link to="./Repetition">Repetition</Link></td><td><Link to="./Pathfinder">Pathfinder</Link></td></tr>
+                        <tr><td><Link to="./Noise">Noise</Link></td><td><Link to="./Columnative">Columnative</Link></td><td><Link to="./#"><small>Reserved</small></Link></td></tr>
                     </tbody>
                 </table>
             </div>
