@@ -141,3 +141,7 @@ table td {
 	height: 0%;
 	width: 0%;
 }
+
+#columnative .column + .column {
+   margin-left: 10px;
+}

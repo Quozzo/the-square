@@ -6,6 +6,7 @@ import Mole from './modes/Mole'
 import Perimeter from './modes/Perimeter'
 import Repetition from './modes/Repetition'
 import Pathfinder from './modes/Pathfinder'
+import Columnative from './modes/Columnative'
 
 
 export default class Manager extends Component {
@@ -22,7 +23,8 @@ export default class Manager extends Component {
                         <Route path="/Perimeter" component={Perimeter} />    
                         <Route path="/Swatch" component={Swatch} />    
                         <Route path="/Repetition" component={Repetition} />
-                        <Route path="/Pathfinder" component={Pathfinder} />                    
+                        <Route path="/Pathfinder" component={Pathfinder} />
+                        <Route path="/Columnative" component={Columnative} />                 
                         <Route component={FourOhFour} />
                     </Switch>
                 </>
