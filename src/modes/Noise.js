@@ -7,12 +7,15 @@ export default class Noise extends Component {
         this.container = React.createRef()
         this.state = {
             phase: "intro",
-            totalSquares: 5,
+            totalSquares: 10,
             squares: 0
         }
     }
 
     start = () => {
+        this.setState({
+           totalSquares: (Math.random()*5) + 5
+        })
         this.nextSquare()
         this.setState({
             phase: "prep"
@@ -86,8 +89,8 @@ export default class Noise extends Component {
         top = top - this.container.current.offsetTop
         console.log(left, coords[0], top, coords[1])
         if(
-            left > coords[0] && left < coords[0] + 50 &&
-            top > coords[1] && top < coords[1] + 50
+            left-10 > coords[0] && left <= coords[0] + 20 &&
+            top-10 > coords[1] && top <= coords[1] + 20
         ){
             this.setState({
                 phase: "success"
@@ -130,17 +133,6 @@ export default class Noise extends Component {
 	}
 }
 
-class Movable extends Component {
-    render() {
-        return (
-            <div>
-                
-            </div>
-        )
-    }
-}
-
-
 class Square extends Component {
     constructor(){
         super()
@@ -150,7 +142,7 @@ class Square extends Component {
         const { nextSquare } = this.props
         setTimeout(() => {
             nextSquare()
-        }, 2000)  
+        }, 500)  
     }
 
     componentDidMount(){
